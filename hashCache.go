@@ -23,7 +23,7 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 	}
 	// expire default value
 	if expire == 0 {
-		expire = 300
+		expire = 10
 	}
 	cacheKey := key + keyCode
 	hashKey := hash + keyCode
@@ -34,7 +34,7 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 
 	hashCacheValue[hashKey] = CacheValue{
 		value:  value,
-		expire: uint(time.Now().Unix()) + expire*1000,
+		expire: uint(time.Now().Unix()) + expire,
 	}
 	// set cache value: mcHashCache.set(cacheKey, {value: value, expire: Date.now() + expire * 1000});
 	// TODO: check cache set error
@@ -47,7 +47,7 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 	}
 }
 
-func getHashCache(key string, hash string) CacheResponse {
+func GetHashCache(key string, hash string) CacheResponse {
 	// validate required params
 	if key == "" || hash == "" {
 		return CacheResponse{
@@ -69,17 +69,19 @@ func getHashCache(key string, hash string) CacheResponse {
 		delete(mcHashCache, cacheKey)
 		return CacheResponse{
 			ok:      false,
+			value:   nil,
 			message: "cache expired and deleted",
 		}
 	} else {
 		return CacheResponse{
 			ok:      false,
+			value:   nil,
 			message: "cache info does not exist",
 		}
 	}
 }
 
-func deleteHashCache(key string, hash string, by string) CacheResponse {
+func DeleteHashCache(key string, hash string, by string) CacheResponse {
 	// validate required params
 	if key == "" || hash == "" && by == "hash" {
 		return CacheResponse{
@@ -128,10 +130,14 @@ func deleteHashCache(key string, hash string, by string) CacheResponse {
 	}
 }
 
-func clearHashCache() {
+func ClearHashCache() CacheResponse {
 	// clear mcHashCache map content
 	mcHashCache = map[string]HashCacheValueType{}
 	//for key := range mcHashCache {
 	//	delete(mcHashCache, key)
 	//}
+	return CacheResponse{
+		ok:      true,
+		message: "task completed successfully",
+	}
 }

@@ -23,15 +23,14 @@ func SetCache(key string, value ValueType, expire uint) CacheResponse {
 	}
 	// expire default value
 	if expire == 0 {
-		expire = 300
+		expire = 10
 	}
 	cacheKey := key + keyCode
 	// set cache value: mcCache.set(cacheKey, {value: value, expire: Date.now() + expire * 1000});
 	// TODO: check cache set error
 	mcCache[cacheKey] = CacheValue{
 		value:  value,
-		expire: uint(time.Now().Unix()) + expire*1000,
-		//expire: time.Unix() + expire.Seconds(),
+		expire: uint(time.Now().Unix()) + expire,
 	}
 	// return successful response | TODO: or error response
 	return CacheResponse{
@@ -41,7 +40,7 @@ func SetCache(key string, value ValueType, expire uint) CacheResponse {
 	}
 }
 
-func getCache(key string) CacheResponse {
+func GetCache(key string) CacheResponse {
 	// validate required params
 	if key == "" {
 		return CacheResponse{
@@ -62,17 +61,19 @@ func getCache(key string) CacheResponse {
 		delete(mcCache, cacheKey)
 		return CacheResponse{
 			ok:      false,
+			value:   nil,
 			message: "cache expired and deleted",
 		}
 	} else {
 		return CacheResponse{
 			ok:      false,
+			value:   nil,
 			message: "cache info does not exist",
 		}
 	}
 }
 
-func deleteCache(key string) CacheResponse {
+func DeleteCache(key string) CacheResponse {
 	// validate required params
 	if key == "" {
 		return CacheResponse{
@@ -95,10 +96,14 @@ func deleteCache(key string) CacheResponse {
 	}
 }
 
-func clearCache() {
+func ClearCache() CacheResponse {
 	// clear mcCache map content
 	mcCache = map[string]CacheValue{}
 	//for key := range mcCache {
 	//	delete(mcCache, key)
 	//}
+	return CacheResponse{
+		ok:      true,
+		message: "task completed successfully",
+	}
 }
