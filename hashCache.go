@@ -17,11 +17,11 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 	// validate required params
 	if key == "" || hash == "" || value == nil {
 		return CacheResponse{
-			ok:      false,
-			message: "cache key, hash and value are required",
+			Ok:      false,
+			Message: "cache key, hash and Value are required",
 		}
 	}
-	// expire default value
+	// expire default Value
 	if expire == 0 {
 		expire = 10
 	}
@@ -36,14 +36,14 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 		value:  value,
 		expire: uint(time.Now().Unix()) + expire,
 	}
-	// set cache value: mcHashCache.set(cacheKey, {value: value, expire: Date.now() + expire * 1000});
+	// set cache Value: mcHashCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
 	// TODO: check cache set error
 	mcHashCache[cacheKey] = hashCacheValue
 	// return successful response | TODO: or error response
 	return CacheResponse{
-		ok:      true,
-		message: "task completed successfully",
-		value:   mcHashCache[cacheKey][hashKey].value,
+		Ok:      true,
+		Message: "task completed successfully",
+		Value:   mcHashCache[cacheKey][hashKey].value,
 	}
 }
 
@@ -51,8 +51,8 @@ func GetHashCache(key string, hash string) CacheResponse {
 	// validate required params
 	if key == "" || hash == "" {
 		return CacheResponse{
-			ok:      false,
-			message: "key and hash-key are required",
+			Ok:      false,
+			Message: "key and hash-key are required",
 		}
 	}
 	cacheKey := key + keyCode
@@ -60,23 +60,23 @@ func GetHashCache(key string, hash string) CacheResponse {
 	cValue := mcHashCache[cacheKey][hashKey]
 	if cValue.value != nil && cValue.expire > uint(time.Now().Unix()) {
 		return CacheResponse{
-			ok:      true,
-			message: "task completed successfully",
-			value:   cValue.value,
+			Ok:      true,
+			Message: "task completed successfully",
+			Value:   cValue.value,
 		}
 	} else if cValue.value != nil && cValue.expire < uint(time.Now().Unix()) {
 		// delete expired cache
 		delete(mcHashCache, cacheKey)
 		return CacheResponse{
-			ok:      false,
-			value:   nil,
-			message: "cache expired and deleted",
+			Ok:      false,
+			Value:   nil,
+			Message: "cache expired and deleted",
 		}
 	} else {
 		return CacheResponse{
-			ok:      false,
-			value:   nil,
-			message: "cache info does not exist",
+			Ok:      false,
+			Value:   nil,
+			Message: "cache info does not exist",
 		}
 	}
 }
@@ -85,11 +85,11 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 	// validate required params
 	if key == "" || hash == "" && by == "hash" {
 		return CacheResponse{
-			ok:      false,
-			message: "cache key is required",
+			Ok:      false,
+			Message: "cache key is required",
 		}
 	}
-	// by default value
+	// by default Value
 	if by == "" {
 		by = "hash"
 	}
@@ -101,13 +101,13 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 		if cValue != nil {
 			delete(mcHashCache, cacheKey)
 			return CacheResponse{
-				ok:      true,
-				message: "task completed successfully",
+				Ok:      true,
+				Message: "task completed successfully",
 			}
 		}
 		return CacheResponse{
-			ok:      false,
-			message: "task not completed, cache-key-value not found",
+			Ok:      false,
+			Message: "task not completed, cache-key-Value not found",
 		}
 	}
 	if key != "" && hash != "" && by == "hash" {
@@ -115,18 +115,18 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 		if cValue.value != nil {
 			delete(mcHashCache[cacheKey], hashKey)
 			return CacheResponse{
-				ok:      true,
-				message: "task completed successfully",
+				Ok:      true,
+				Message: "task completed successfully",
 			}
 		}
 		return CacheResponse{
-			ok:      false,
-			message: "task not completed, cache-key-hash-value not found",
+			Ok:      false,
+			Message: "task not completed, cache-key-hash-Value not found",
 		}
 	}
 	return CacheResponse{
-		ok:      false,
-		message: "task could not be completed due to incomplete inputs",
+		Ok:      false,
+		Message: "task could not be completed due to incomplete inputs",
 	}
 }
 
@@ -137,7 +137,7 @@ func ClearHashCache() CacheResponse {
 	//	delete(mcHashCache, key)
 	//}
 	return CacheResponse{
-		ok:      true,
-		message: "task completed successfully",
+		Ok:      true,
+		Message: "task completed successfully",
 	}
 }

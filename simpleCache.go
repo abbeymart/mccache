@@ -17,16 +17,16 @@ func SetCache(key string, value ValueType, expire uint) CacheResponse {
 	// validate required params
 	if key == "" || value == nil {
 		return CacheResponse{
-			ok:      false,
-			message: "cache key and value are required",
+			Ok:      false,
+			Message: "cache key and Value are required",
 		}
 	}
-	// expire default value
+	// expire default Value
 	if expire == 0 {
 		expire = 10
 	}
 	cacheKey := key + keyCode
-	// set cache value: mcCache.set(cacheKey, {value: value, expire: Date.now() + expire * 1000});
+	// set cache Value: mcCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
 	// TODO: check cache set error
 	mcCache[cacheKey] = CacheValue{
 		value:  value,
@@ -34,9 +34,9 @@ func SetCache(key string, value ValueType, expire uint) CacheResponse {
 	}
 	// return successful response | TODO: or error response
 	return CacheResponse{
-		ok:      true,
-		message: "task completed successfully",
-		value:   mcCache[cacheKey].value,
+		Ok:      true,
+		Message: "task completed successfully",
+		Value:   mcCache[cacheKey].value,
 	}
 }
 
@@ -44,31 +44,31 @@ func GetCache(key string) CacheResponse {
 	// validate required params
 	if key == "" {
 		return CacheResponse{
-			ok:      false,
-			message: "cache key is required",
+			Ok:      false,
+			Message: "cache key is required",
 		}
 	}
 	cacheKey := key + keyCode
 	cValue := mcCache[cacheKey]
 	if cValue.value != nil && cValue.expire > uint(time.Now().Unix()) {
 		return CacheResponse{
-			ok:      true,
-			message: "task completed successfully",
-			value:   cValue.value,
+			Ok:      true,
+			Message: "task completed successfully",
+			Value:   cValue.value,
 		}
 	} else if cValue.value != nil && cValue.expire < uint(time.Now().Unix()) {
 		// delete expired cache
 		delete(mcCache, cacheKey)
 		return CacheResponse{
-			ok:      false,
-			value:   nil,
-			message: "cache expired and deleted",
+			Ok:      false,
+			Value:   nil,
+			Message: "cache expired and deleted",
 		}
 	} else {
 		return CacheResponse{
-			ok:      false,
-			value:   nil,
-			message: "cache info does not exist",
+			Ok:      false,
+			Value:   nil,
+			Message: "cache info does not exist",
 		}
 	}
 }
@@ -77,8 +77,8 @@ func DeleteCache(key string) CacheResponse {
 	// validate required params
 	if key == "" {
 		return CacheResponse{
-			ok:      false,
-			message: "cache key is required",
+			Ok:      false,
+			Message: "cache key is required",
 		}
 	}
 	cacheKey := key + keyCode
@@ -86,13 +86,13 @@ func DeleteCache(key string) CacheResponse {
 	if cValue.value != nil {
 		delete(mcCache, cacheKey)
 		return CacheResponse{
-			ok:      true,
-			message: "task completed successfully",
+			Ok:      true,
+			Message: "task completed successfully",
 		}
 	}
 	return CacheResponse{
-		ok:      false,
-		message: "task not completed, cache-key-value not found",
+		Ok:      false,
+		Message: "task not completed, cache-key-Value not found",
 	}
 }
 
@@ -103,7 +103,7 @@ func ClearCache() CacheResponse {
 	//	delete(mcCache, key)
 	//}
 	return CacheResponse{
-		ok:      true,
-		message: "task completed successfully",
+		Ok:      true,
+		Message: "task completed successfully",
 	}
 }

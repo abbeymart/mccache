@@ -22,45 +22,45 @@ func TestSetHashCache(t *testing.T) {
 	fmt.Println("should set and return valid cacheHashValue:")
 	{
 		setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, expiryTime)
-		if !setCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.ok, true)
+		if !setCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Ok, true)
 		}
-		if setCacheRes.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.value, cacheValue)
+		if setCacheRes.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Value, cacheValue)
 		}
-		if setCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.message, okMsg)
+		if setCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Message, okMsg)
 		}
 		getCacheRes := GetHashCache(cacheKey, hashKey)
-		if !getCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.ok, true)
+		if !getCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Ok, true)
 		}
-		if getCacheRes.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.value, cacheValue)
+		if getCacheRes.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Value, cacheValue)
 		}
-		if getCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.message, okMsg)
+		if getCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Message, okMsg)
 		}
 	}
 
-	fmt.Println("should clear the cache and return nil/empty value:")
+	fmt.Println("should clear the cache and return nil/empty Value:")
 	{
 		clearCacheRes := ClearHashCache()
-		if !clearCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", clearCacheRes.ok, true)
+		if !clearCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", clearCacheRes.Ok, true)
 		}
-		if clearCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", clearCacheRes.message, okMsg)
+		if clearCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", clearCacheRes.Message, okMsg)
 		}
 		getCacheRes2 := GetHashCache(cacheKey, hashKey)
-		if getCacheRes2.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes2.ok, false)
+		if getCacheRes2.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes2.Ok, false)
 		}
-		if getCacheRes2.value != nil {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes2.value, nil)
+		if getCacheRes2.Value != nil {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes2.Value, nil)
 		}
-		if getCacheRes2.message != notExistMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes2.message, notExistMsg)
+		if getCacheRes2.Message != notExistMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes2.Message, notExistMsg)
 		}
 	}
 
@@ -68,39 +68,39 @@ func TestSetHashCache(t *testing.T) {
 	{
 		// change the expiry time to 2 seconds
 		setCacheRes3 := SetHashCache(cacheKey, hashKey, cacheValue, 2)
-		if !setCacheRes3.ok {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes3.ok, true)
+		if !setCacheRes3.Ok {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes3.Ok, true)
 		}
-		if setCacheRes3.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes3.value, cacheValue)
+		if setCacheRes3.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes3.Value, cacheValue)
 		}
-		if setCacheRes3.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes3.message, okMsg)
+		if setCacheRes3.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes3.Message, okMsg)
 		}
 		getCacheRes3 := GetHashCache(cacheKey, hashKey)
-		if !getCacheRes3.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes3.ok, true)
+		if !getCacheRes3.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes3.Ok, true)
 		}
-		if getCacheRes3.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes3.value, cacheValue)
+		if getCacheRes3.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes3.Value, cacheValue)
 		}
-		if getCacheRes3.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes3.message, okMsg)
+		if getCacheRes3.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes3.Message, okMsg)
 		}
 	}
 
-	fmt.Println("should return nil value after timeout/expiration:")
+	fmt.Println("should return nil Value after timeout/expiration:")
 	{
 		time.Sleep(4 * time.Second)
 		getCacheRes := GetHashCache(cacheKey, hashKey)
-		if getCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.ok, false)
+		if getCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Ok, false)
 		}
-		if getCacheRes.value != nil {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.value, nil)
+		if getCacheRes.Value != nil {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Value, nil)
 		}
-		if getCacheRes.message != expiredMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.message, expiredMsg)
+		if getCacheRes.Message != expiredMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Message, expiredMsg)
 		}
 	}
 
@@ -108,45 +108,45 @@ func TestSetHashCache(t *testing.T) {
 	{
 		// change the expiry time to 10 seconds
 		setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, 10)
-		if !setCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.ok, true)
+		if !setCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Ok, true)
 		}
-		if setCacheRes.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.value, cacheValue)
+		if setCacheRes.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Value, cacheValue)
 		}
-		if setCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", setCacheRes.message, okMsg)
+		if setCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", setCacheRes.Message, okMsg)
 		}
 		getCacheRes := GetHashCache(cacheKey, hashKey)
-		if !getCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.ok, true)
+		if !getCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Ok, true)
 		}
-		if getCacheRes.value != cacheValue {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.value, cacheValue)
+		if getCacheRes.Value != cacheValue {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Value, cacheValue)
 		}
-		if getCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.message, okMsg)
+		if getCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Message, okMsg)
 		}
 	}
 
-	fmt.Println("should delete the cache and return nil/empty value:")
+	fmt.Println("should delete the cache and return nil/empty Value:")
 	{
 		deleteCacheRes := DeleteHashCache(cacheKey, hashKey, "hash")
-		if !deleteCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", deleteCacheRes.ok, true)
+		if !deleteCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", deleteCacheRes.Ok, true)
 		}
-		if deleteCacheRes.message != okMsg {
-			t.Errorf("Got: %v, Expected: %v", deleteCacheRes.message, okMsg)
+		if deleteCacheRes.Message != okMsg {
+			t.Errorf("Got: %v, Expected: %v", deleteCacheRes.Message, okMsg)
 		}
 		getCacheRes := GetHashCache(cacheKey, cacheKey)
-		if getCacheRes.ok {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.ok, false)
+		if getCacheRes.Ok {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Ok, false)
 		}
-		if getCacheRes.value != nil {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.value, nil)
+		if getCacheRes.Value != nil {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Value, nil)
 		}
-		if getCacheRes.message != notExistMsg {
-			t.Errorf("Got: %v, Expected: %v", getCacheRes.message, notExistMsg)
+		if getCacheRes.Message != notExistMsg {
+			t.Errorf("Got: %v, Expected: %v", getCacheRes.Message, notExistMsg)
 		}
 	}
 }

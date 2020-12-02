@@ -34,7 +34,7 @@ const (
 	okMsg                  = "task completed successfully"
 	notExistMsg            = "cache info does not exist"
 	expiredMsg             = "cache expired and deleted"
-	//notCompleteMsg         = "task not completed, cache-key-value not found"
+	//notCompleteMsg         = "task not completed, cache-key-Value not found"
 	//cacheKeyMsg            = "cache key is required"
 	//cacheExpiredDeletedMsg = "cache expired and deleted"
 )

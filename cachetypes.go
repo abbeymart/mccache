@@ -12,9 +12,9 @@ type CacheValue struct {
 }
 
 type CacheResponse struct {
-	ok      bool
-	message string
-	value   ValueType
+	Ok      bool
+	Message string
+	Value   ValueType
 }
 
 type HashCacheValueType map[string]CacheValue
