@@ -3,7 +3,7 @@
 - In-Memory data/information cache for CRUD and other operations
 - Simple Cache: key-value pair storage
 - Hash Cache: key-hash-value storage
-- See the test folder for different test cases / scenarios and usage
+- See the test files for different test cases / scenarios and usage
 
 ## API - Simple Cache
 
