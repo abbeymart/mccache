@@ -37,13 +37,22 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 		expire: uint(time.Now().Unix()) + expire,
 	}
 	// set cache Value: mcHashCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
-	// TODO: check cache set error
 	mcHashCache[cacheKey] = hashCacheValue
-	// return successful response | TODO: or error response
+	// return successful response
+	if _, ok := mcHashCache[cacheKey]; ok {
+		if hValue, hok := mcHashCache[cacheKey][hashKey]; hok {
+			return CacheResponse{
+				Ok:      true,
+				Message: "task completed successfully",
+				Value:   hValue.value,
+			}
+		}
+	}
+	// check/track error
 	return CacheResponse{
-		Ok:      true,
-		Message: "task completed successfully",
-		Value:   mcHashCache[cacheKey][hashKey].value,
+		Ok:      false,
+		Message: "unable to set cache value",
+		Value:   nil,
 	}
 }
 
@@ -57,14 +66,14 @@ func GetHashCache(key string, hash string) CacheResponse {
 	}
 	cacheKey := key + keyCode
 	hashKey := hash + keyCode
-	cValue := mcHashCache[cacheKey][hashKey]
-	if cValue.value != nil && cValue.expire > uint(time.Now().Unix()) {
+	cValue, ok := mcHashCache[cacheKey][hashKey]
+	if (ok && cValue.value != nil) && cValue.expire > uint(time.Now().Unix()) {
 		return CacheResponse{
 			Ok:      true,
 			Message: "task completed successfully",
 			Value:   cValue.value,
 		}
-	} else if cValue.value != nil && cValue.expire < uint(time.Now().Unix()) {
+	} else if (ok && cValue.value != nil) && cValue.expire < uint(time.Now().Unix()) {
 		// delete expired cache
 		delete(mcHashCache, cacheKey)
 		return CacheResponse{
@@ -97,8 +106,8 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 	hashKey := hash + keyCode
 
 	if key != "" && by == "key" {
-		cValue := mcHashCache[cacheKey]
-		if cValue != nil {
+		// perform find and delete action
+		if _, ok := mcHashCache[cacheKey]; ok {
 			delete(mcHashCache, cacheKey)
 			return CacheResponse{
 				Ok:      true,
@@ -111,8 +120,8 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 		}
 	}
 	if key != "" && hash != "" && by == "hash" {
-		cValue := mcHashCache[cacheKey][hashKey]
-		if cValue.value != nil {
+		// perform find and delete action
+		if _, ok := mcHashCache[cacheKey][hashKey]; ok {
 			delete(mcHashCache[cacheKey], hashKey)
 			return CacheResponse{
 				Ok:      true,

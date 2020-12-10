@@ -26,18 +26,26 @@ func SetCache(key string, value ValueType, expire uint) CacheResponse {
 		expire = 10
 	}
 	cacheKey := key + keyCode
-	// set cache Value: mcCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
-	// TODO: check cache set error
+	// set cache Value
 	mcCache[cacheKey] = CacheValue{
 		value:  value,
 		expire: uint(time.Now().Unix()) + expire,
 	}
-	// return successful response | TODO: or error response
-	return CacheResponse{
-		Ok:      true,
-		Message: "task completed successfully",
-		Value:   mcCache[cacheKey].value,
+	// return successful response
+	if cValue, ok := mcCache[cacheKey]; ok {
+		return CacheResponse{
+			Ok:      true,
+			Message: "task completed successfully",
+			Value:   cValue.value,
+		}
 	}
+	// check/track error
+	return CacheResponse{
+		Ok:      false,
+		Message: "unable to set cache value",
+		Value:   nil,
+	}
+
 }
 
 func GetCache(key string) CacheResponse {
@@ -49,14 +57,14 @@ func GetCache(key string) CacheResponse {
 		}
 	}
 	cacheKey := key + keyCode
-	cValue := mcCache[cacheKey]
-	if cValue.value != nil && cValue.expire > uint(time.Now().Unix()) {
+	cValue, ok := mcCache[cacheKey]
+	if (ok && cValue.value != nil) && cValue.expire > uint(time.Now().Unix()) {
 		return CacheResponse{
 			Ok:      true,
 			Message: "task completed successfully",
 			Value:   cValue.value,
 		}
-	} else if cValue.value != nil && cValue.expire < uint(time.Now().Unix()) {
+	} else if (ok && cValue.value != nil) && cValue.expire < uint(time.Now().Unix()) {
 		// delete expired cache
 		delete(mcCache, cacheKey)
 		return CacheResponse{
@@ -82,8 +90,7 @@ func DeleteCache(key string) CacheResponse {
 		}
 	}
 	cacheKey := key + keyCode
-	cValue := mcCache[cacheKey]
-	if cValue.value != nil {
+	if _, ok := mcCache[cacheKey]; ok {
 		delete(mcCache, cacheKey)
 		return CacheResponse{
 			Ok:      true,

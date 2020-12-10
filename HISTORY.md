@@ -1,5 +1,10 @@
 # Historical logs
 
+## Version 0.3.0
+
+- Release date: Dec 10, 2020
+- Refactored and added error-checking
+
 ## Version 0.2.2
 
 - Release date: Dec 08, 2020
