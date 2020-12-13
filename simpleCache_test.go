@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 )
-import "github.com/abbeymart/mctestgo"
+import "github.com/abbeymart/mctest"
 
 func TestSetCache(t *testing.T) {
 	jsonStr, _ := json.Marshal(cKeyValue)
