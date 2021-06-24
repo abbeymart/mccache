@@ -1,4 +1,4 @@
-# mccache | github.com/abbeymart/mccachego
+# mccache | github.com/abbeymart/mccache
 
 - In-Memory data/information cache for CRUD and other operations
 - Simple Cache: key-value pair storage

@@ -8,7 +8,7 @@ type ValueType interface{}
 
 type CacheValue struct {
 	value  ValueType
-	expire uint
+	expire int64
 }
 
 type CacheResponse struct {

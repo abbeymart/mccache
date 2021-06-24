@@ -13,7 +13,7 @@ var mcHashCache = make(map[string]HashCacheValueType)
 // secret keyCode for added security
 //const keyCode = "mcconnect_20200320"
 
-func SetHashCache(key string, hash string, value ValueType, expire uint) CacheResponse {
+func SetHashCache(key string, hash string, value ValueType, expire int64) CacheResponse {
 	// validate required params
 	if key == "" || hash == "" || value == nil {
 		return CacheResponse{
@@ -21,20 +21,19 @@ func SetHashCache(key string, hash string, value ValueType, expire uint) CacheRe
 			Message: "cache key, hash and Value are required",
 		}
 	}
-	// expire default Value
+	// expire default Value (in seconds)
 	if expire == 0 {
-		expire = 10
+		expire = 300
 	}
 	cacheKey := key + keyCode
 	hashKey := hash + keyCode
 
 	// initialise a hashCacheValue
 	hashCacheValue := HashCacheValueType{}
-	//var hashCacheValue HashCacheValueType
 
 	hashCacheValue[hashKey] = CacheValue{
 		value:  value,
-		expire: uint(time.Now().Unix()) + expire,
+		expire: time.Now().Unix() + expire,
 	}
 	// set cache Value: mcHashCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
 	mcHashCache[cacheKey] = hashCacheValue
@@ -67,13 +66,13 @@ func GetHashCache(key string, hash string) CacheResponse {
 	cacheKey := key + keyCode
 	hashKey := hash + keyCode
 	cValue, ok := mcHashCache[cacheKey][hashKey]
-	if (ok && cValue.value != nil) && cValue.expire > uint(time.Now().Unix()) {
+	if (ok && cValue.value != nil) && cValue.expire > time.Now().Unix() {
 		return CacheResponse{
 			Ok:      true,
 			Message: "task completed successfully",
 			Value:   cValue.value,
 		}
-	} else if (ok && cValue.value != nil) && cValue.expire < uint(time.Now().Unix()) {
+	} else if (ok && cValue.value != nil) && cValue.expire < time.Now().Unix() {
 		// delete expired cache
 		delete(mcHashCache, cacheKey)
 		return CacheResponse{
@@ -116,7 +115,7 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 		}
 		return CacheResponse{
 			Ok:      false,
-			Message: "task not completed, cache-key-Value not found",
+			Message: "task not completed, cache-key-value not found",
 		}
 	}
 	if key != "" && hash != "" && by == "hash" {
@@ -130,7 +129,7 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 		}
 		return CacheResponse{
 			Ok:      false,
-			Message: "task not completed, cache-key-hash-Value not found",
+			Message: "task not completed, cache-key-hash-value not found",
 		}
 	}
 	return CacheResponse{
@@ -141,10 +140,10 @@ func DeleteHashCache(key string, hash string, by string) CacheResponse {
 
 func ClearHashCache() CacheResponse {
 	// clear mcHashCache map content
-	mcHashCache = map[string]HashCacheValueType{}
-	//for key := range mcHashCache {
-	//	delete(mcHashCache, key)
-	//}
+	for key := range mcHashCache {
+		delete(mcHashCache, key)
+	}
+	// mcHashCache = map[string]HashCacheValueType{}
 	return CacheResponse{
 		Ok:      true,
 		Message: "task completed successfully",
