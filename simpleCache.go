@@ -53,7 +53,7 @@ func GetCache(key string) CacheResponse {
 	if key == "" {
 		return CacheResponse{
 			Ok:      false,
-			Message: "cache key is required",
+			Message: "cache-key is required",
 		}
 	}
 	cacheKey := key + keyCode

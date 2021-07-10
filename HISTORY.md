@@ -1,10 +1,15 @@
 # Historical logs
 
+## Version 0.3.3
+
+- Release date: July 10, 2021
+- Refactored hash-cache-keys positions
+
+
 ## Version 0.3.2
 
 - Release date: June 23, 2021
 - Refactored types and updated dep-to mctest-v0.5.4
-
 
 ## Version 0.3.1
 
