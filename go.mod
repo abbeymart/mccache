@@ -1,4 +1,4 @@
-module github.com/abbeymart/mcauditlog
+module github.com/abbeymart/mccache
 
 go 1.18
 

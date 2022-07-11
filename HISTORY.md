@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.4.2
+- Release date: July 11, 2022
+- Correct-module-path-name
+
 ## Version 0.4.1
 - Release date: July 11, 2022
 - Refactored cache-map to accommodate multi-goroutine-writes
