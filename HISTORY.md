@@ -1,6 +1,6 @@
 # Historical logs
 
-## Version 0.4.0
+## Version 0.4.1
 - Release date: July 11, 2022
 - Refactored cache-map to accommodate multi-goroutine-writes
 
