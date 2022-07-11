@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.4.0
+- Release date: July 11, 2022
+- Refactored cache-map to accommodate multi-goroutine-writes
+
 ## Version 0.3.4
 - Release date: April 26, 2022
 - Updated to go-version-1.18

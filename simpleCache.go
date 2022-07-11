@@ -4,16 +4,23 @@
 
 package mccache
 
-import "time"
+import (
+	"sync"
+	"time"
+)
 
 // Initialise cache object/dictionary (map)
 //var mcCache map[string]CacheValue
 var mcCache = make(map[string]CacheValue)
 
+// added mutex variable: for the cache-map to accommodate multi-goroutine-writes
+var simpleCacheMutex sync.Mutex
+
 // secret keyCode for added security
 const keyCode = "mcconnect_20200320"
 
 func SetCache(key string, value ValueType, expire int64) CacheResponse {
+	//var mu sync.Mutex
 	// validate required params
 	if key == "" || value == nil {
 		return CacheResponse{
@@ -27,10 +34,12 @@ func SetCache(key string, value ValueType, expire int64) CacheResponse {
 	}
 	cacheKey := key + keyCode
 	// set cache Value
+	simpleCacheMutex.Lock()
 	mcCache[cacheKey] = CacheValue{
 		value:  value,
 		expire: time.Now().Unix() + expire,
 	}
+	simpleCacheMutex.Unlock()
 	// return successful response
 	if cValue, ok := mcCache[cacheKey]; ok {
 		return CacheResponse{
@@ -66,7 +75,9 @@ func GetCache(key string) CacheResponse {
 		}
 	} else if (ok && cValue.value != nil) && cValue.expire < time.Now().Unix() {
 		// delete expired cache
+		simpleCacheMutex.Lock()
 		delete(mcCache, cacheKey)
+		simpleCacheMutex.Unlock()
 		return CacheResponse{
 			Ok:      false,
 			Value:   nil,
@@ -91,7 +102,9 @@ func DeleteCache(key string) CacheResponse {
 	}
 	cacheKey := key + keyCode
 	if _, ok := mcCache[cacheKey]; ok {
+		simpleCacheMutex.Lock()
 		delete(mcCache, cacheKey)
+		simpleCacheMutex.Unlock()
 		return CacheResponse{
 			Ok:      true,
 			Message: "task completed successfully",
@@ -105,9 +118,11 @@ func DeleteCache(key string) CacheResponse {
 
 func ClearCache() CacheResponse {
 	// clear mcCache map content
+	simpleCacheMutex.Lock()
 	for key := range mcCache {
 		delete(mcCache, key)
 	}
+	simpleCacheMutex.Unlock()
 	//mcCache = map[string]CacheValue{}
 	return CacheResponse{
 		Ok:      true,
