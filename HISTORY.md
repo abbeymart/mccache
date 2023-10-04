@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.4.3
+- Release date: Oct 04, 2023
+- Resolved-concurrent-map-read-write-defect-v0.4.3
+
 ## Version 0.4.2
 - Release date: July 11, 2022
 - Correct-module-path-name

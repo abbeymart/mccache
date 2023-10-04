@@ -10,7 +10,7 @@ import (
 )
 
 // Initialise cache object/dictionary (map)
-//var mcCache map[string]CacheValue
+// var mcCache map[string]CacheValue
 var mcCache = make(map[string]CacheValue)
 
 // added mutex variable: for the cache-map to accommodate multi-goroutine-writes
@@ -33,6 +33,7 @@ func SetCache(key string, value ValueType, expire int64) CacheResponse {
 		expire = 300
 	}
 	cacheKey := key + keyCode
+
 	// set cache Value
 	simpleCacheMutex.Lock()
 	mcCache[cacheKey] = CacheValue{
@@ -40,12 +41,21 @@ func SetCache(key string, value ValueType, expire int64) CacheResponse {
 		expire: time.Now().Unix() + expire,
 	}
 	simpleCacheMutex.Unlock()
-	// return successful response
+
+	// read cache-value
+	var setCacheValue ValueType = nil
+	simpleCacheMutex.Lock()
 	if cValue, ok := mcCache[cacheKey]; ok {
+		setCacheValue = cValue.value
+	}
+	simpleCacheMutex.Unlock()
+
+	// return successful response
+	if setCacheValue != nil {
 		return CacheResponse{
 			Ok:      true,
 			Message: "task completed successfully",
-			Value:   cValue.value,
+			Value:   setCacheValue,
 		}
 	}
 	// check/track error

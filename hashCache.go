@@ -38,17 +38,27 @@ func SetHashCache(key string, hash string, value ValueType, expire int64) CacheR
 		expire: time.Now().Unix() + expire,
 	}
 	// set cache Value: mcHashCache.set(cacheKey, {Value: Value, expire: Date.now() + expire * 1000});
+	var setCacheValue ValueType = nil
+
 	hashCacheMutex.Lock()
 	mcHashCache[hashKey] = hashCacheValue
 	hashCacheMutex.Unlock()
-	// return successful response
+
+	// read cache-value
+	hashCacheMutex.Lock()
 	if _, ok := mcHashCache[hashKey]; ok {
 		if cValue, cok := mcHashCache[hashKey][cacheKey]; cok {
-			return CacheResponse{
-				Ok:      true,
-				Message: "task completed successfully",
-				Value:   cValue.value,
-			}
+			setCacheValue = cValue.value
+		}
+	}
+	hashCacheMutex.Unlock()
+
+	// return successful response
+	if setCacheValue != nil {
+		return CacheResponse{
+			Ok:      true,
+			Message: "task completed successfully",
+			Value:   setCacheValue,
 		}
 	}
 	// check/track error
