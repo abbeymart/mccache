@@ -12,7 +12,7 @@ import (
 )
 import "github.com/abbeymart/mctest"
 
-func TestSetHashCache(t *testing.T) {
+func TestHashCache(t *testing.T) {
 	jsonStr, _ := json.Marshal(cKeyValue)
 	jsonStr2, _ := json.Marshal(cHashValue)
 	jsonVal, _ := json.Marshal(cacheValue)
@@ -27,12 +27,12 @@ func TestSetHashCache(t *testing.T) {
 		TestFunc: func() {
 			setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, expiryTime)
 			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
 		},
 	})
 
@@ -41,11 +41,11 @@ func TestSetHashCache(t *testing.T) {
 		TestFunc: func() {
 			clearCacheRes := ClearHashCache()
 			mctest.AssertEquals(t, clearCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, clearCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, clearCacheRes.Message, okMsg, "response should be: "+okMsg)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
 			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil:")
-			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: " + notExistMsg)
+			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
 		},
 	})
 
@@ -55,12 +55,12 @@ func TestSetHashCache(t *testing.T) {
 			// change the expiry time to 2 seconds
 			setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, 2)
 			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
 		},
 	})
 
@@ -71,7 +71,7 @@ func TestSetHashCache(t *testing.T) {
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
 			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil")
-			mctest.AssertEquals(t, getCacheRes.Message, expiredMsg, "response should be: " + expiredMsg)
+			mctest.AssertEquals(t, getCacheRes.Message, expiredMsg, "response should be: "+expiredMsg)
 		},
 	})
 
@@ -81,12 +81,12 @@ func TestSetHashCache(t *testing.T) {
 			// change the expiry time to 10 seconds
 			setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, 10)
 			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: " + string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
 		},
 	})
 
@@ -95,11 +95,11 @@ func TestSetHashCache(t *testing.T) {
 		TestFunc: func() {
 			deleteCacheRes := DeleteHashCache(cacheKey, hashKey, "hash")
 			mctest.AssertEquals(t, deleteCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, deleteCacheRes.Message, okMsg, "response should be: " + okMsg)
+			mctest.AssertEquals(t, deleteCacheRes.Message, okMsg, "response should be: "+okMsg)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
 			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
-			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil" )
-			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: " + notExistMsg)
+			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil")
+			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
 		},
 	})
 

@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.5.0
+- Release date: Oct 14, 2024
+- Refactored-simple-hash-cache-types-added-instance-methods-v0.5.0
+
 ## Version 0.4.3
 - Release date: Oct 04, 2023
 - Resolved-concurrent-map-read-write-defect-v0.4.3
