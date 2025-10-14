@@ -37,7 +37,7 @@ func TestHashCache(t *testing.T) {
 	})
 
 	mctest.McTest(mctest.OptionValue{
-		Name: "should clear the cache and return nil/empty Value:",
+		Name: "should clear the cache and return nil/empty ItemValue:",
 		TestFunc: func() {
 			clearCacheRes := ClearHashCache()
 			mctest.AssertEquals(t, clearCacheRes.Ok, true, "response should be: true")
@@ -65,7 +65,7 @@ func TestHashCache(t *testing.T) {
 	})
 
 	mctest.McTest(mctest.OptionValue{
-		Name: "should return nil Value after timeout/expiration:",
+		Name: "should return nil ItemValue after timeout/expiration:",
 		TestFunc: func() {
 			time.Sleep(4 * time.Second)
 			getCacheRes := GetHashCache(cacheKey, hashKey)
@@ -91,7 +91,7 @@ func TestHashCache(t *testing.T) {
 	})
 
 	mctest.McTest(mctest.OptionValue{
-		Name: "should delete the cache and return nil/empty Value:",
+		Name: "should delete the cache and return nil/empty ItemValue:",
 		TestFunc: func() {
 			deleteCacheRes := DeleteHashCache(cacheKey, hashKey, "hash")
 			mctest.AssertEquals(t, deleteCacheRes.Ok, true, "response should be: true")

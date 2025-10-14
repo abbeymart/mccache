@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.5.1
+- Release date: Oct 14, 2025
+- Corrected-concurrent-map-read-and-map-write-error-v0.5.1
+
 ## Version 0.5.0
 - Release date: Oct 14, 2024
 - Refactored-simple-hash-cache-types-added-instance-methods-v0.5.0

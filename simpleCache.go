@@ -22,16 +22,16 @@ func SetCache(key string, value ValueType, expire int64) CacheResponse {
 	if key == "" || value == nil {
 		return CacheResponse{
 			Ok:      false,
-			Message: "cache key and Value are required",
+			Message: "cache key and ItemValue are required",
 		}
 	}
-	// expire default Value (in seconds)
+	// expire default ItemValue (in seconds)
 	if expire == 0 {
 		expire = 300
 	}
 	cacheKey := key + SecretCode
 
-	// set cache Value
+	// set cache ItemValue
 	mcCache.mu.Lock()
 	defer mcCache.mu.Unlock()
 	mcCache.items[cacheKey] = CacheValue{
@@ -132,7 +132,7 @@ func ClearCache() CacheResponse {
 
 // Instance approach
 
-// NewCache create  a cache repository instance
+// NewCache create a cache repository instance
 func NewCache(capacity int, secretCode string) *SimpleCache {
 	if secretCode == "" {
 		secretCode = SecretCode
@@ -174,6 +174,8 @@ func (c *SimpleCache) removeDatedCache() bool {
 		}
 	}
 	// delete the oldest cache item
+	c.mu.Lock()
+	defer c.mu.Unlock()
 	delete(c.items, cKey)
 	return true
 }
@@ -187,7 +189,7 @@ func (c *SimpleCache) SetCache(key string, value ValueType, expire int64) CacheR
 			Message: "valid cache key and value are required",
 		}
 	}
-	// expire default Value (in seconds)
+	// expire default ItemValue (in seconds)
 	if expire == 0 {
 		expire = 300
 	}
@@ -200,7 +202,7 @@ func (c *SimpleCache) SetCache(key string, value ValueType, expire int64) CacheR
 		// remove the most-dated or expired cache item
 		c.removeDatedCache()
 	}
-	// set cache Value
+	// set cache ItemValue
 	c.items[cacheKey] = CacheValue{
 		value:     value,
 		expire:    time.Now().Unix() + expire,

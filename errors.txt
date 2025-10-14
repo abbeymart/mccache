@@ -1,0 +1,12 @@
+fatal error: concurrent map read and map write
+
+goroutine 12516 [running]:
+internal/runtime/maps.fatal({0x105934776?, 0x14000031875?})
+	/usr/local/go/src/runtime/panic.go:1058 +0x20
+github.com/abbeymart/mccache.DeleteHashCache({0x1400064c2c0?, 0x14000031c50?}, {0x105912723, 0x5}, {0x105911835?, 0x1051b6d44?})
+	/Users/abbeymart/go/pkg/mod/github.com/abbeymart/mccache@v0.5.0/hashCache.go:145 +0x308
+github.com/abbeymart/mcdbcrud.(*Crud).Create(0x140000c2008, {0x14000060358?, 0x10591db9a?, 0x9?})
+	/Users/abbeymart/go/pkg/mod/github.com/abbeymart/mcdbcrud@v0.6.4/save.go:66 +0x4e4
+github.com/abbeymart/mcdbcrud.(*Crud).SaveRecord(0x140000c2008)
+	/Users/abbeymart/go/pkg/mod/github.com/abbeymart/mcdbcrud@v0.6.4/crud.go:269 +0xad4
+github.com/abbeymart/mcinfo/controls.SaveRecord({{0x105c1b920, 0x140004a6380}, {0x105b51bc0, 0
