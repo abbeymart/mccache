@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.5.2
+- Release date: Dec 09, 2025
+- Updated-mctest-to-v0.7.1-v0.5.2
+
 ## Version 0.5.1
 - Release date: Oct 14, 2025
 - Corrected-concurrent-map-read-and-map-write-error-v0.5.1

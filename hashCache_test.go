@@ -22,7 +22,7 @@ func TestHashCache(t *testing.T) {
 	fmt.Println("HASH-CACHE-TESTING:")
 	fmt.Println("**********************")
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue:",
 		TestFunc: func() {
 			setCacheRes := SetHashCache(cacheKey, hashKey, cacheValue, expiryTime)
@@ -36,7 +36,7 @@ func TestHashCache(t *testing.T) {
 		},
 	})
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should clear the cache and return nil/empty ItemValue:",
 		TestFunc: func() {
 			clearCacheRes := ClearHashCache()
@@ -49,7 +49,7 @@ func TestHashCache(t *testing.T) {
 		},
 	})
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue -> before timeout/expiration:",
 		TestFunc: func() {
 			// change the expiry time to 2 seconds
@@ -64,7 +64,7 @@ func TestHashCache(t *testing.T) {
 		},
 	})
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should return nil ItemValue after timeout/expiration:",
 		TestFunc: func() {
 			time.Sleep(4 * time.Second)
@@ -75,7 +75,7 @@ func TestHashCache(t *testing.T) {
 		},
 	})
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue, repeat prior to deleteCache testing:",
 		TestFunc: func() {
 			// change the expiry time to 10 seconds
@@ -90,7 +90,7 @@ func TestHashCache(t *testing.T) {
 		},
 	})
 
-	mctest.McTest(mctest.OptionValue{
+	mctest.McTest(mctest.ParamsType{
 		Name: "should delete the cache and return nil/empty ItemValue:",
 		TestFunc: func() {
 			deleteCacheRes := DeleteHashCache(cacheKey, hashKey, "hash")
