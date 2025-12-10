@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.5.3
+- Release date: TBD
+- Resolved-delete-cache-method-ref-v0.5.3
+
 ## Version 0.5.2
 - Release date: Dec 09, 2025
 - Updated-mctest-to-v0.7.1-v0.5.2

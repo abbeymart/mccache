@@ -226,7 +226,7 @@ func (c *HashCache) removeDatedCache() bool {
 		}
 	}
 	// delete the oldest hash-cache item
-	delete(c.items[hashKey], cKey)
+	c.DeleteCache(cKey, hashKey, ByKey)
 	return true
 }
 

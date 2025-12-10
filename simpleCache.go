@@ -176,7 +176,7 @@ func (c *SimpleCache) removeDatedCache() bool {
 	// delete the oldest cache item
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	delete(c.items, cKey)
+	c.DeleteCache(cKey)
 	return true
 }
 
