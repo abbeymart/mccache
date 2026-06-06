@@ -1,5 +1,9 @@
 # Historical logs
 
+## Version 0.6.0
+- Release date: June 05, 2026
+- updated-mctest_v0.8.0-added-singleton-cache-store-rewrite-testcases-v0.6.0
+
 ## Version 0.5.3
 - Release date: TBD
 - Resolved-delete-cache-method-ref-v0.5.3

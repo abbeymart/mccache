@@ -1,4 +1,4 @@
-// @Author: abbeymart | Abi Akindele | @Created: 2020-03-09 | @Updated: 2020-03-09
+// @Author: abbeymart | Abi Akindele | @Created: 2020-03-09 | @Updated: 2026-06-05
 // @Company: mConnect.biz | @License: MIT
 // @Description: mConnect cache - testing
 
@@ -17,89 +17,103 @@ func TestCache(t *testing.T) {
 	cacheKey := string(jsonStr)
 	jsonVal, _ := json.Marshal(cacheValue)
 
+	var results []mctest.UnitTestResult
+
 	fmt.Println("SIMPLE-CACHE-TESTING:")
 	fmt.Println("**********************")
 
-	mctest.McTest(mctest.ParamsType{
+	test1 := mctest.NewTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue:",
-		TestFunc: func() {
-			setCacheRes := SetCache(cacheKey, cacheValue, expiryTime)
-			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
-		},
 	})
+	test1.SetTestFunction(func() {
+		setCacheRes := SetCache(cacheKey, cacheValue, expiryTime)
+		test1.AssertEquals(setCacheRes.Ok, true, "response should be: true")
+		test1.AssertEquals(setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test1.AssertEquals(setCacheRes.Message, okMsg, "response should be: "+okMsg)
+		getCacheRes := GetCache(cacheKey)
+		test1.AssertEquals(getCacheRes.Ok, true, "response should be: true")
+		test1.AssertEquals(getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test1.AssertEquals(getCacheRes.Message, okMsg, "response should be: "+okMsg)
+	})
+	test1Result := test1.RunTest()
+	results = append(results, test1Result)
 
-	mctest.McTest(mctest.ParamsType{
+	test2 := mctest.NewTest(mctest.ParamsType{
 		Name: "should clear the cache and return nil/empty ItemValue:",
-		TestFunc: func() {
-			clearCacheRes := ClearCache()
-			mctest.AssertEquals(t, clearCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, clearCacheRes.Message, okMsg, "response should be: "+okMsg)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
-			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil")
-			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
-		},
 	})
+	test2.SetTestFunction(func() {
+		clearCacheRes := ClearCache()
+		test2.AssertEquals(clearCacheRes.Ok, true, "response should be: true")
+		test2.AssertEquals(clearCacheRes.Message, okMsg, "response should be: "+okMsg)
+		getCacheRes := GetCache(cacheKey)
+		test2.AssertEquals(getCacheRes.Ok, false, "response should be: false")
+		test2.AssertEquals(getCacheRes.Value, nil, "response should be: nil")
+		test2.AssertEquals(getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
+	})
+	test2Result := test2.RunTest()
+	results = append(results, test2Result)
 
-	mctest.McTest(mctest.ParamsType{
+	test3 := mctest.NewTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue -> before timeout/expiration:",
-		TestFunc: func() {
-			// change the expiry time to 2 seconds
-			setCacheRes := SetCache(cacheKey, cacheValue, 2)
-			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
-		},
 	})
+	test3.SetTestFunction(func() {
+		// change the expiry time to 2 seconds
+		setCacheRes := SetCache(cacheKey, cacheValue, 2)
+		test3.AssertEquals(setCacheRes.Ok, true, "response should be: true")
+		test3.AssertEquals(setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test3.AssertEquals(setCacheRes.Message, okMsg, "response should be: "+okMsg)
+		getCacheRes := GetCache(cacheKey)
+		test3.AssertEquals(getCacheRes.Ok, true, "response should be: true")
+		test3.AssertEquals(getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test3.AssertEquals(getCacheRes.Message, okMsg, "response should be: "+okMsg)
+	})
+	test3Result := test3.RunTest()
+	results = append(results, test3Result)
 
-	mctest.McTest(mctest.ParamsType{
+	test4 := mctest.NewTest(mctest.ParamsType{
 		Name: "should return nil ItemValue after timeout/expiration:",
-		TestFunc: func() {
-			time.Sleep(3 * time.Second)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
-			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil")
-			mctest.AssertEquals(t, getCacheRes.Message, expiredMsg, "response should be: "+expiredMsg)
-		},
 	})
+	time.Sleep(3 * time.Second)
+	test4.SetTestFunction(func() {
+		getCacheRes := GetCache(cacheKey)
+		test4.AssertEquals(getCacheRes.Ok, false, "response should be: false")
+		test4.AssertEquals(getCacheRes.Value, nil, "response should be: nil")
+		test4.AssertEquals(getCacheRes.Message, expiredMsg, "response should be: "+expiredMsg)
+	})
+	test4Result := test4.RunTest()
+	results = append(results, test4Result)
 
-	mctest.McTest(mctest.ParamsType{
+	test5 := mctest.NewTest(mctest.ParamsType{
 		Name: "should set and return valid cacheValue, repeat prior to deleteCache testing:",
-		TestFunc: func() {
-			// change the expiry time to 10 seconds
-			setCacheRes := SetCache(cacheKey, cacheValue, 10)
-			mctest.AssertEquals(t, setCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, setCacheRes.Message, okMsg, "response should be: "+okMsg)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
-			mctest.AssertEquals(t, getCacheRes.Message, okMsg, "response should be: "+okMsg)
-		},
 	})
+	test5.SetTestFunction(func() {
+		// change the expiry time to 10 seconds
+		setCacheRes := SetCache(cacheKey, cacheValue, 10)
+		test5.AssertEquals(setCacheRes.Ok, true, "response should be: true")
+		test5.AssertEquals(setCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test5.AssertEquals(setCacheRes.Message, okMsg, "response should be: "+okMsg)
+		getCacheRes := GetCache(cacheKey)
+		test5.AssertEquals(getCacheRes.Ok, true, "response should be: true")
+		test5.AssertEquals(getCacheRes.Value, cacheValue, "response should be: "+string(jsonVal))
+		test5.AssertEquals(getCacheRes.Message, okMsg, "response should be: "+okMsg)
+	})
+	test5Result := test5.RunTest()
+	results = append(results, test5Result)
 
-	mctest.McTest(mctest.ParamsType{
+	test6 := mctest.NewTest(mctest.ParamsType{
 		Name: "should delete the cache and return nil/empty ItemValue:",
-		TestFunc: func() {
-			deleteCacheRes := DeleteCache(cacheKey)
-			mctest.AssertEquals(t, deleteCacheRes.Ok, true, "response should be: true")
-			mctest.AssertEquals(t, deleteCacheRes.Message, okMsg, "response should be: "+okMsg)
-			getCacheRes := GetCache(cacheKey)
-			mctest.AssertEquals(t, getCacheRes.Ok, false, "response should be: false")
-			mctest.AssertEquals(t, getCacheRes.Value, nil, "response should be: nil:")
-			mctest.AssertEquals(t, getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
-		},
 	})
+	test6.SetTestFunction(func() {
+		deleteCacheRes := DeleteCache(cacheKey)
+		test6.AssertEquals(deleteCacheRes.Ok, true, "response should be: true")
+		test6.AssertEquals(deleteCacheRes.Message, okMsg, "response should be: "+okMsg)
+		getCacheRes := GetCache(cacheKey)
+		test6.AssertEquals(getCacheRes.Ok, false, "response should be: false")
+		test6.AssertEquals(getCacheRes.Value, nil, "response should be: nil:")
+		test6.AssertEquals(getCacheRes.Message, notExistMsg, "response should be: "+notExistMsg)
+	})
+	test6Result := test6.RunTest()
+	results = append(results, test6Result)
 
-	mctest.PostTestResult()
+	mctest.TestResult(results)
 }
